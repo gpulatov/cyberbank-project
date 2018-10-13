@@ -1,10 +1,12 @@
 require('../Utilities/CustomLocators.js');
 var HomePage = require('../Pages/Home.page.js');
 var BankManagerPage = require('../Pages/BankManager.page.js');
+var Base = require('../Utilities/Base.js');
 
 describe('Login', () => {
     beforeEach(function () {
-        browser.get('http://www.way2automation.com/angularjs-protractor/banking/#/login');
+        Base.navigateToHome();
+        //browser.get('http://www.way2automation.com/angularjs-protractor/banking/#/login');
     });
 
     it('should have correct page title', () => {
