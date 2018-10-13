@@ -35,6 +35,23 @@ describe('Login', () => {
     it('should login as Bank Manager', () => {
         HomePage.managerLoginButton.click();
         expect(BankManagerPage.addCustomerButton.isDisplayed()).toBe(true);
+        expect(BankManagerPage.addCustomerButton.getText()).toEqual('Add Customer');
     });
 
+    it('should display options for Manager', () => {
+        HomePage.managerLoginButton.click();
+        expect(BankManagerPage.addCustomerButton.isDisplayed()).toBe(true);
+        expect(BankManagerPage.addCustomerButton.getText()).toEqual('Add Customer');
+        expect(BankManagerPage.openAccountButton.isDisplayed()).toBe(true);
+        expect(BankManagerPage.openAccountButton.getText()).toEqual('Open Account');
+        expect(BankManagerPage.customersButton.isDisplayed()).toBe(true);
+        expect(BankManagerPage.customersButton.getText()).toEqual('Customers');
+    })
+
+    it('should go to homepage', () => {
+        HomePage.managerLoginButton.click();
+        BankManagerPage.homeButton.click();
+        expect(HomePage.customerLoginButton.isDisplayed()).toBe(true);
+        expect(HomePage.managerLoginButton.isDisplayed()).toBe(true);
+    });
 });
