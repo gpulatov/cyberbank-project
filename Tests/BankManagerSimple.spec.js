@@ -3,6 +3,8 @@ var HomePage = require('../Pages/Home.page.js');
 var BankManagerPage = require('../Pages/BankManager.page.js');
 var Base = require('../Utilities/Base.js');
 var AddCustomerPage = require('../Pages/AddCustomerPage.page.js');
+var Customers = require('../Pages/Customers.page.js');
+var BankData = require('../TestData/BankData.json');
 
 describe('Bank Manager', () => {
 
@@ -25,7 +27,8 @@ describe('Bank Manager', () => {
 
         it('should display page header', () => {
             expect(HomePage.pageHeader.isDisplayed()).toBe(true);
-            expect(HomePage.pageHeader.getText()).toEqual('XYZ Bank');
+            //expect(HomePage.pageHeader.getText()).toEqual('XYZ Bank');
+            expect(HomePage.pageHeader.getText()).toEqual(BankData.appData.bankName);
         });
 
         it('should display login option for Bank Manager', () => {
@@ -152,13 +155,47 @@ describe('Bank Manager', () => {
                 .getAttribute('required')).toEqual('true');
         });
 
-        it('should add customer', () => {
+        xit('should add customer', () => {
             AddCustomerPage.firtNameInputBox.sendKeys('Jeff');
             AddCustomerPage.lastNameInputBox.sendKeys('Bezos');
             AddCustomerPage.postalCodeInputBox.sendKeys('224455');
-
+            AddCustomerPage.formAddCustomerButton.click();
+            expect(browser.switchTo().alert().getText())
+                .toContain(('Customer added successfully with customer id :'));
+            browser.switchTo().alert().accept();
         });
 
+        fit('should add customer by JSON', () => {
+
+            for (let i = 0; i < BankData.customers.length; i++) {
+                AddCustomerPage.firtNameInputBox.sendKeys(BankData.customers[i].fName);
+                AddCustomerPage.lastNameInputBox.sendKeys(BankData.customers[i].lName);
+                AddCustomerPage.postalCodeInputBox.sendKeys(BankData.customers[i].pCode);
+                AddCustomerPage.formAddCustomerButton.click();
+                expect(browser.switchTo().alert().getText())
+                    .toContain(('Customer added successfully with customer id :'));
+                browser.switchTo().alert().accept();
+            }
+            BankManagerPage.customersButton.click();
+        });
+
+        it('should display new customer first name that was created', () => {
+            BankManagerPage.customersButton.click();
+            expect(Customers.getLastRowValue(1).getText()).toEqual('Jeff');
+        });
+
+        it('should display new customer that was created', () => {
+            expect(Customers.getLastRowValue(2).getText()).toEqual('Bezos');
+        });
+
+        it('should display new customer that was created', () => {
+            expect(Customers.getLastRowValue(3).getText()).toEqual('224455');
+        });
+
+        it('should have no account number for the user that was created', () => {
+            expect(Customers.getLastRowValue(4).getText()).toEqual('');
+
+        });
     });
 
 });
