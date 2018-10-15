@@ -1,4 +1,4 @@
-require('../Utilities/CustomLocators.js');
+ 
 var BankMaganerPage = require('./BankManager.page');
 
 var AddCustomerPage = function () {
